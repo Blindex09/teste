@@ -15,6 +15,10 @@ function setupTabs(panelId, isAuto) {
     tabs.forEach(tab => {
         const selectTabFunction = () => selectTab(tab, tabs, isAuto);
         tab.addEventListener('click', selectTabFunction);
+        // Adiciona suporte para mudança de conteúdo ao focar nas guias (útil para navegação por teclado)
+        if (isAuto) {
+            tab.addEventListener('focus', selectTabFunction);
+        }
         tab.addEventListener('touchend', e => {
             e.preventDefault(); // Previne o evento de clique subsequente
             selectTabFunction();
@@ -48,6 +52,7 @@ function selectTab(selectedTab, tabs, isAuto) {
         const panel = document.getElementById(panelId);
         panel.style.display = isSelected ? 'block' : 'none';
         if (isSelected && !isAuto) {
+            // Mover o foco para o conteúdo da guia ativa no modo manual
             panel.setAttribute('tabindex', '-1');
             panel.focus();
         } else {
